@@ -36,10 +36,15 @@ public class ExecutionEnvUtil {
     public static StreamExecutionEnvironment prepare(ParameterTool parameterTool) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(parameterTool.getInt(PropertiesConstants.STREAM_PARALLELISM, 5));
+        /**
+         * flink的4种重启策略（1.固定间隔 (Fixed delay)、2.失败率 (Failure rate)、3.无重启 (No restart)、4.Fallback(备用重启策略)）
+         * 固定延时重启策略: 最多重启4次，每次间隔 60s
+         */
         env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(4, 60000));
         if (parameterTool.getBoolean(PropertiesConstants.STREAM_CHECKPOINT_ENABLE, true)) {
             env.enableCheckpointing(parameterTool.getLong(PropertiesConstants.STREAM_CHECKPOINT_INTERVAL, 10000));
         }
+        // 设置全局参数
         env.getConfig().setGlobalJobParameters(parameterTool);
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         return env;

@@ -6,7 +6,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
- * Desc: Periodic Watermark
+ * Desc: Periodic Watermark(周期性的生成水印，不会针对每条消息都生成)
  * Created by zhisheng on 2019-07-07
  * blog：http://www.54tianzhisheng.cn/
  * 微信公众号：zhisheng
@@ -20,7 +20,7 @@ public class Main1 {
         env.setParallelism(1);
 //        env.setParallelism(4);
 
-        SingleOutputStreamOperator<Word> data = env.socketTextStream("localhost", 9001)
+        SingleOutputStreamOperator<Word> data = env.socketTextStream("10.20.2.86", 7777)
                 .map(new MapFunction<String, Word>() {
                     @Override
                     public Word map(String value) throws Exception {

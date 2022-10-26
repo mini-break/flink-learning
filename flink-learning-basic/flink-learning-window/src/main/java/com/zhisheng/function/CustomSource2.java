@@ -10,9 +10,8 @@ import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
  * blog：http://www.54tianzhisheng.cn/
  * 微信公众号：zhisheng
  */
-public class CustomSource extends RichSourceFunction<WordEvent> {
+public class CustomSource2 extends RichSourceFunction<WordEvent> {
 
-    private volatile boolean isRunning = true;
 
     @Override
     public void open(Configuration parameters) throws Exception {
@@ -21,21 +20,25 @@ public class CustomSource extends RichSourceFunction<WordEvent> {
 
     @Override
     public void run(SourceContext<WordEvent> ctx) throws Exception {
-        while (isRunning) {
-            ctx.collect(new WordEvent(word(), count(), System.currentTimeMillis()));
-            Thread.sleep(1000);
+        for (int i = 0; i < 10; i++) {
+            WordEvent element;
+            if (i % 2 == 0) {
+                element = new WordEvent(word(), count(), System.currentTimeMillis());
+            } else {
+                element = new WordEvent(word(), count(), System.currentTimeMillis() - 9000);
+            }
+            System.out.println(i + ":" + element);
+            ctx.collect(element);
         }
     }
 
     @Override
     public void close() throws Exception {
         super.close();
-        isRunning = false;
     }
 
     @Override
     public void cancel() {
-        isRunning = false;
     }
 
 

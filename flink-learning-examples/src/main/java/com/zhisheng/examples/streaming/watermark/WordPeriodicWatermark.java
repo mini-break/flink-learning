@@ -22,10 +22,11 @@ public class WordPeriodicWatermark implements AssignerWithPeriodicWatermarks<Wor
     public long extractTimestamp(Word word, long previousElementTimestamp) {
         long timestamp = word.getTimestamp();
         currentTimestamp = Math.max(timestamp, currentTimestamp);
-        log.info("event timestamp = {}, {}, CurrentWatermark = {}, {}", word.getTimestamp(),
+        System.out.format("event timestamp = %s, %s, CurrentWatermark = %s, %s", word.getTimestamp(),
                 DateUtil.format(word.getTimestamp(), YYYY_MM_DD_HH_MM_SS),
                 getCurrentWatermark().getTimestamp(),
                 DateUtil.format(getCurrentWatermark().getTimestamp(), YYYY_MM_DD_HH_MM_SS));
+        System.out.println();
         return word.getTimestamp();
     }
 
@@ -33,6 +34,8 @@ public class WordPeriodicWatermark implements AssignerWithPeriodicWatermarks<Wor
     @Override
     public Watermark getCurrentWatermark() {
         long maxTimeLag = 5000;
-        return new Watermark(currentTimestamp == Long.MIN_VALUE ? Long.MIN_VALUE : currentTimestamp - maxTimeLag);
+        long timestamp = currentTimestamp == Long.MIN_VALUE ? Long.MIN_VALUE : currentTimestamp - maxTimeLag;
+        System.out.println(System.currentTimeMillis() + " 生成水印:" + timestamp);
+        return new Watermark(timestamp);
     }
 }

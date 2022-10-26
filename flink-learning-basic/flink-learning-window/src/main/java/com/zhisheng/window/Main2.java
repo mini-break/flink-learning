@@ -19,7 +19,7 @@ import org.apache.flink.util.Collector;
 import javax.annotation.Nullable;
 
 /**
- * Desc: Flink Window & Watermark
+ * Desc: Flink Window & Watermark（旧版：用了废弃类或方法）
  * Created by zhisheng on 2019-05-14
  * blog：http://www.54tianzhisheng.cn/
  * 微信公众号：zhisheng
@@ -31,7 +31,7 @@ public class Main2 {
         //如果不指定时间的话，默认是 ProcessingTime，但是如果指定为事件事件的话，需要事件中带有时间或者添加时间水印
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         env.setParallelism(1);
-        ParameterTool parameterTool = ExecutionEnvUtil.PARAMETER_TOOL;
+        // 先调用extractTimestamp方法，再调用getCurrentWatermark方法
         DataStream<WordEvent> data = env.addSource(new CustomSource())
                 .assignTimestampsAndWatermarks(new AssignerWithPeriodicWatermarks<WordEvent>() {
                     private long currentTimestamp = Long.MIN_VALUE;

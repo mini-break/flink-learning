@@ -25,8 +25,10 @@ public class WindowAll {
         DataStreamSource<String> data = env.socketTextStream(parameterTool.get(HOST_NAME), parameterTool.getInt(PORT));
 
         data.flatMap(new LineSplitter())
-                .keyBy(0)
-                .timeWindowAll(Time.seconds(10));
+                .keyBy(t->t.f0)
+                .timeWindowAll(Time.seconds(10))
+                .sum(0)
+                .print();
 
         env.execute("zhisheng —— flink windowAll example");
     }

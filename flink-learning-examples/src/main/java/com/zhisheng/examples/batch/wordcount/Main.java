@@ -31,7 +31,7 @@ public class Main {
                         }
                     }
                 })
-                .groupBy(0)
+                .groupBy(0)// 按单词分组
                 .reduce(new ReduceFunction<Tuple2<String, Integer>>() {
                     @Override
                     public Tuple2<String, Integer> reduce(Tuple2<String, Integer> value1, Tuple2<String, Integer> value2) throws Exception {

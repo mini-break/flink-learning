@@ -38,8 +38,9 @@ public class ScheduleMain {
         threadPool.scheduleAtFixedRate(new GetRulesJob(), 0, 1, TimeUnit.MINUTES);
 
         final ParameterTool parameterTool = ExecutionEnvUtil.createParameterTool(args);
+        // 构造执行环境
         StreamExecutionEnvironment env = ExecutionEnvUtil.prepare(parameterTool);
-
+        // 构造数据源
         DataStreamSource<MetricEvent> source = KafkaConfigUtil.buildSource(env);
         source.map(new MapFunction<MetricEvent, MetricEvent>() {
             @Override

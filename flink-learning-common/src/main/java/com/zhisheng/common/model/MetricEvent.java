@@ -11,30 +11,29 @@ import java.util.Map;
  * blog：http://www.54tianzhisheng.cn/
  * 微信公众号：zhisheng
  */
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class MetricEvent {
 
-	/**
-	 * Metric name
-	 */
-	private String name;
+    /**
+     * Metric name
+     */
+    private String name;
 
-	/**
-	 * Metric timestamp
-	 */
-	private Long timestamp;
+    /**
+     * Metric timestamp
+     */
+    private Long timestamp;
 
-	/**
-	 * Metric fields
-	 */
-	private Map<String, Object> fields;
+    /**
+     * Metric fields
+     */
+    private Map<String, Object> fields;
 
-	/**
-	 * Metric tags
-	 */
-	private Map<String, String> tags;
+    /**
+     * Metric tags
+     */
+    private Map<String, String> tags;
 }

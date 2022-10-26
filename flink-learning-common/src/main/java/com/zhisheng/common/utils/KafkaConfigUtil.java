@@ -85,11 +85,13 @@ public class KafkaConfigUtil {
     private static Map<KafkaTopicPartition, Long> buildOffsetByTime(Properties props, ParameterTool parameterTool, Long time) {
         props.setProperty("group.id", "query_time_" + time);
         KafkaConsumer consumer = new KafkaConsumer(props);
+        // 查询指定主题的元数据信息
         List<PartitionInfo> partitionsFor = consumer.partitionsFor(parameterTool.getRequired(PropertiesConstants.METRICS_TOPIC));
         Map<TopicPartition, Long> partitionInfoLongMap = new HashMap<>();
         for (PartitionInfo partitionInfo : partitionsFor) {
             partitionInfoLongMap.put(new TopicPartition(partitionInfo.topic(), partitionInfo.partition()), time);
         }
+        // 从时间戳开始消费
         Map<TopicPartition, OffsetAndTimestamp> offsetResult = consumer.offsetsForTimes(partitionInfoLongMap);
         Map<KafkaTopicPartition, Long> partitionOffset = new HashMap<>();
         offsetResult.forEach((key, value) -> partitionOffset.put(new KafkaTopicPartition(key.topic(), key.partition()), value.offset()));

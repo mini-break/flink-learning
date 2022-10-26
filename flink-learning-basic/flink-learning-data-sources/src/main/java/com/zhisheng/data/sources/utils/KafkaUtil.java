@@ -15,7 +15,7 @@ import java.util.Properties;
  * Blog: http://www.54tianzhisheng.cn/tags/Flink/
  */
 public class KafkaUtil {
-    public static final String broker_list = "localhost:9092";
+    public static final String broker_list = "10.28.7.4:9092";
     public static final String topic = "metric";  // kafka topic，Flink 程序中需要和这个统一
 
     public static void writeToKafka() throws InterruptedException {

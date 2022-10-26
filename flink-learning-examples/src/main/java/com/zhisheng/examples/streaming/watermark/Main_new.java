@@ -1,7 +1,6 @@
 package com.zhisheng.examples.streaming.watermark;
 
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -11,10 +10,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * blog：http://www.54tianzhisheng.cn/
  * 微信公众号：zhisheng
  */
-public class Main {
+public class Main_new {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+        // env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         //并行度设置为 1
         env.setParallelism(1);
 //        env.setParallelism(4);
@@ -29,7 +28,7 @@ public class Main {
                 });
 
         //Punctuated Watermark
-        data.assignTimestampsAndWatermarks(new WordPunctuatedWatermark());
+        data.assignTimestampsAndWatermarks(new WordPunctuatedWatermark2().withTimestampAssigner(new WordSerializableTimestampAssigner()));
 
         data.print();
         env.execute("watermark demo");

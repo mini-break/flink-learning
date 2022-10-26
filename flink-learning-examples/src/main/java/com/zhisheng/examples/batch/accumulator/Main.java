@@ -35,6 +35,7 @@ public class Main {
                 .sum(1)
                 .print();
 
+        // 数据源35行
         long count = dataSource.count();
         System.out.println(count);
     }
